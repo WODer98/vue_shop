@@ -17,6 +17,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
+            @keyup.enter.native="login"
             prefix-icon="el-icon-user-solid"
           ></el-input>
         </el-form-item>
