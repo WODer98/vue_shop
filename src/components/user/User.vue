@@ -62,7 +62,6 @@
               size="mini"
             ></el-button>
             <!-- 分配角色按钮 -->
-
             <el-tooltip
               effect="dark"
               content="分配角色"
@@ -73,6 +72,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 size="mini"
+                @click="showSetRoleDialog(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -151,11 +151,20 @@
         <el-button type="primary" @click="editUserInfo">确 定</el-button>
       </span>
     </el-dialog>
+    <SetRoleDialog
+      v-if="setRoleDialogVisible"
+      :visible.sync="setRoleDialogVisible"
+      :userInfo="userInfo"
+      :rolesList="rolesList"
+      :getUserList="getUserList"
+    ></SetRoleDialog>
   </div>
 </template>
 
 <script>
+import SetRoleDialog from './SetRoleDialog'
 export default {
+  components: { SetRoleDialog },
   data() {
     // 验证邮箱的规则
     var checkEmail = (rule, value, cb) => {
@@ -186,11 +195,16 @@ export default {
         pagesize: 5
       },
       userList: [],
+      rolesList: [],
       total: 0,
       // 控制添加用户对话框的显示与隐藏
       addDialogVisible: false,
       // 控制编辑用户对话框的显示与隐藏
       editDialogVisible: false,
+      // 控制分配角色对话框的显示与隐藏
+      setRoleDialogVisible: false,
+      // 需要被分配角色的用户信息
+      userInfo: {},
       // 添加用户的表单数据
       addForm: {
         username: '',
@@ -307,7 +321,6 @@ export default {
     },
     // 展示用户编辑的对话框
     async showEditDialog(id) {
-      this.editDialogVisible = true
       const { data: res } = await this.$http.get('users/' + id)
       if (res.meta.status !== 200) {
         return this.$message.err(res.meta.msg)
@@ -344,11 +357,15 @@ export default {
     // 根据id删除用户信息
     async removeUserById(id) {
       // 弹框询问用户是否删除数据
-      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).catch(err => err)
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该用户, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch((err) => err)
       /* }).catch(err => { return err })
           等价于
           }).catch(err => err)
@@ -367,6 +384,22 @@ export default {
         this.$message.success(res.meta.msg)
         this.getUserList()
       }
+    },
+    // 获取所有的角色列表
+    async getRolesList() {
+      const { data: res } = await this.$http.get('roles')
+      // console.log(res.data)
+      if (res.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      } else {
+        return res.data
+      }
+    },
+    // 展示分配角色对话框
+    async showSetRoleDialog(userInfo) {
+      this.userInfo = userInfo
+      this.rolesList = await this.getRolesList()
+      this.setRoleDialogVisible = true
     }
   }
 }
