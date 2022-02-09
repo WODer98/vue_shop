@@ -6,7 +6,7 @@
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
       <el-breadcrumb-item>角色列表</el-breadcrumb-item>
     </el-breadcrumb>
-    <!-- 卡片试图区域 -->
+    <!-- 卡片视图区域 -->
     <el-card>
       <!-- 添加角色按钮区域 -->
       <el-row>
@@ -178,7 +178,7 @@ export default {
     },
     // 根据id删除角色
     async removeRoleById(id) {
-      // 弹框提示用户是否删除后
+      // 弹框提示用户是否删除
       const confirmResult = await this.$confirm(
         '此操作将永久删除用户，是否继续？',
         '提示',

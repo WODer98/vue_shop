@@ -1,38 +1,35 @@
 <template>
   <div>
-    <!-- 修改角色的对话框 -->
+    <!-- 修改菜单的对话框 -->
     <el-dialog
-      title="修改角色"
+      title="修改分类"
       :visible.sync="visible"
       width="30%"
       @close="editDialogClosed"
       :before-close="editDialogClosed"
     >
       <!-- 内容主体区域 -->
-      <el-form :model="editForm" ref="editFormRef" label-width="70px">
+      <el-form :model="editForm" ref="editFormRef" label-width="100px">
         <el-form-item
-          label="角色名"
-          prop="roleName"
+          label="分类名称"
+          prop="cat_name"
           :rules="[
-            { required: true, message: '请输入角色名', trigger: 'blur' },
+            { required: true, message: '请输入分类名称', trigger: 'blur' },
             {
-              min: 3,
+              min: 2,
               max: 10,
-              message: '角色名在3~10个字符之间',
+              message: '分类名称在2~10个字符之间',
               trigger: 'blur'
             }
           ]"
         >
-          <el-input v-model="editForm.roleName"></el-input>
-        </el-form-item>
-        <el-form-item label="角色描述" prop="roleDesc">
-          <el-input v-model="editForm.roleDesc"></el-input>
+          <el-input v-model="editForm.cat_name"></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogClosed">取 消</el-button>
-        <el-button type="primary" @click="editRole">确 定</el-button>
+        <el-button type="primary" @click="editCate">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -40,34 +37,35 @@
 
 <script>
 export default {
-  name: 'EditRoleDialog',
+  name: 'EditCateDialog',
   props: {
     visible: {
       type: Boolean,
       default: false
     },
     editForm: { type: Object },
-    getRolesList: { type: Function }
+    getCateList: { type: Function }
   },
   methods: {
-    // 监听用户修改对话框的关闭事件
+    // 监听分类修改对话框的关闭事件
     editDialogClosed() {
       this.$refs.editFormRef.resetFields()
       this.$emit('update:visible', false) // 直接修改父组件的属性
     },
-    // 点击修改确定按钮
-    editRole() {
+    editCate() {
       this.$refs.editFormRef.validate(async (valid) => {
         if (!valid) return null
-        // 可以发起修改角色的网络请求
-        const { data: res } = await this.$http.put('roles/' + this.editForm.roleId,
-          { roleName: this.editForm.roleName, roleDesc: this.editForm.roleDesc })
+        // 发起修改分类的请求
+        const { data: res } = await this.$http.put(
+          'categories/' + this.editForm.cat_id,
+          { cat_name: this.editForm.cat_name }
+        )
         if (res.meta.status !== 200) {
           return this.$message.error(res.meta.msg)
         } else {
           this.$message.success(res.meta.msg)
           this.$emit('update:visible', false) // 直接修改父组件的属性
-          this.getRolesList()
+          this.getCateList()
         }
       })
     }

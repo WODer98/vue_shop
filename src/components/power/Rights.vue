@@ -26,17 +26,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页区域 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="pagenum"
-        :page-sizes="[10, 20, 25, 30]"
-        :page-size="pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
-      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -46,11 +35,7 @@ export default {
   data() {
     return {
       // 权限列表
-      rightsList: [],
-      pagenum: 1,
-      // 当前每页显示多少条数据
-      pagesize: 10,
-      total: 0
+      rightsList: []
     }
   },
   created() {
@@ -66,20 +51,7 @@ export default {
         return this.$message.error(res.meta.msg)
       } else {
         this.rightsList = res.data
-        this.total = res.data.length
       }
-    },
-    // 监听pageSize改变的事件
-    handleSizeChange(newPageSize) {
-      // console.log(newPageSize)
-      this.pagesize = newPageSize
-      this.getRightsList()
-    },
-    // 监听页码值改变的事件
-    handleCurrentChange(newPage) {
-      console.log(newPage)
-      this.pagenum = newPage
-      this.getRightsList()
     }
   }
 }
