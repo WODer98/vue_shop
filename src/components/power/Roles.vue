@@ -201,7 +201,7 @@ export default {
     },
     // 根据id删除对应权限
     async removeRightById(role, rightId) {
-      // 弹框提示用户是否删除后
+      // 弹框提示用户是否删除
       const confirmResult = await this.$confirm(
         '此操作将永久取消该权限，是否继续？',
         '提示',
