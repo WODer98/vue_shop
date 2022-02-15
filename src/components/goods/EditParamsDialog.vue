@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 添加分类的对话框 -->
+    <!-- 修改分类的对话框 -->
     <el-dialog
       :title="titleText"
       :visible.sync="visible"

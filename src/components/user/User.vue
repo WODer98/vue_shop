@@ -14,6 +14,7 @@
           <el-input
             placeholder="请输入内容"
             v-model="queryInfo.query"
+            @keyup.enter.native="getUserList"
             clearable
             @clear="getUserList"
           >
@@ -243,7 +244,7 @@ export default {
           { validator: checkMobile, trigger: 'blur' }
         ]
       },
-      // 添加表单的验证规则对象
+      // 编辑表单的验证规则对象
       editFormRules: {
         email: [
           { required: true, message: '请输入密码', trigger: 'blur' },
