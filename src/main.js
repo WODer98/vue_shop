@@ -24,7 +24,7 @@ Vue.config.productionTip = false
 Vue.component('tree-table', TreeTable)
 // 将富文本编辑器注册为全局可用的组件
 Vue.use(VueQuillEditor)
-Vue.filter('dataFormat', function (originVal) {
+/* Vue.filter('dataFormat', function (originVal) {
   const dt = new Date(originVal)
 
   const y = dt.getFullYear()
@@ -36,7 +36,7 @@ Vue.filter('dataFormat', function (originVal) {
   const ss = (dt.getSeconds() + 1 + '').padStart(2, '0')
 
   return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
-})
+}) */
 
 new Vue({
   router,

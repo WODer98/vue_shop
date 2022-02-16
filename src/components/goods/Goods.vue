@@ -154,7 +154,7 @@ export default {
         this.goodsList = res.data.goods
         this.total = res.data.total
         this.goodsList.forEach((good) => {
-          good.add_time = moment(good.add_time).format('YYYY-M-DD HH:mm:ss')
+          good.add_time = moment(good.add_time).format('YYYY-MM-DD HH:mm:ss')
         })
       }
     },
